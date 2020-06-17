@@ -28,9 +28,9 @@ struct NvmSetup {
 
   std::string pmem_path;  //目录
 
-  uint64_t Level0_column_compaction_trigger_size = 7ul * 1024 * 1024 * 1024;  //7G trigger
-  uint64_t Level0_column_compaction_slowdown_size = 7ul * 1024 * 1024 * 1024 + 512ul * 1024 * 1024;  //7.5G slowdown
-  uint64_t Level0_column_compaction_stop_size = 8ul * 1024 * 1024 * 1024;   //8G stop
+  uint64_t Level0_column_compaction_trigger_size = 1024ul * 1024 * 1024;  //500M trigger
+  uint64_t Level0_column_compaction_slowdown_size = 1025ul * 1024 * 1024 + 512ul * 1024 * 1024;  //1.5G slowdown
+  uint64_t Level0_column_compaction_stop_size = 2ul * 1024 * 1024 * 1024;   //2G stop
 
   int Column_compaction_no_L1_select_L0 = 4;     //column compaction时没有L1文件交集时,至少选择L0数据量进行column compaction的文件个数
   int Column_compaction_have_L1_select_L0 = 2;   //column compaction时有L1文件交集时,至少选择L0数据量进行column compaction的文件个数
@@ -67,9 +67,9 @@ struct NvmCfOptions {
   std::string pmem_path;
   //uint64_t cf_pmem_size;
 
-  uint64_t Level0_column_compaction_trigger_size = 7ul * 1024 * 1024 * 1024;  //7G trigger
-  uint64_t Level0_column_compaction_slowdown_size = 7ul * 1024 * 1024 * 1024 + 512ul * 1024 * 1024;  //7.5G slowdown
-  uint64_t Level0_column_compaction_stop_size = 8ul * 1024 * 1024 * 1024;   //8G stop
+  uint64_t Level0_column_compaction_trigger_size = 512ul * 1024 * 1024;  //512M trigger
+  uint64_t Level0_column_compaction_slowdown_size = 200ul * 1024 * 1024 + 512ul * 1024 * 1024;  //700M slowdown
+  uint64_t Level0_column_compaction_stop_size = 1ul * 1024 * 1024 * 1024;   //1G stop
 
   int Column_compaction_no_L1_select_L0 = 4;     //column compaction时没有L1文件交集时,至少选择L0数据量进行column compaction的文件个数
   int Column_compaction_have_L1_select_L0 = 2;   //column compaction时有L1文件交集时,至少选择L0数据量进行column compaction的文件个数

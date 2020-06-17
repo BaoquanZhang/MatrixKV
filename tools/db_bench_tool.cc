@@ -2794,6 +2794,12 @@ void VerifyDBFromDB(std::string& truth_db_name) {
         method = &Benchmark::IteratorCreationWhileWriting;
       } else if (name == "seekrandom") {
         method = &Benchmark::SeekRandom;
+      } else if (name == "shortrange") {
+        FLAGS_seek_nexts=48;
+        method = &Benchmark::SeekRandom;
+      } else if (name == "longrange") {
+        FLAGS_seek_nexts=1024;
+        method = &Benchmark::SeekRandom;
       } else if (name == "seekrandomwhilewriting") {
         num_threads++;  // Add extra thread for writing
         method = &Benchmark::SeekRandomWhileWriting;
@@ -6348,10 +6354,19 @@ void VerifyDBFromDB(std::string& truth_db_name) {
     printf("Wait balance:%lu s\n",sleep_time);
   }
   void CleanCache() {
-    system("sync");
-    system("echo 3 > /proc/sys/vm/drop_caches");
+    int sys_return = system("sync");
+    if (sys_return) {
+     printf("sync");
+    }
+    sys_return = system("echo 3 > /proc/sys/vm/drop_caches");
+    if (sys_return) {
+     printf("echo");
+    }
     sleep(5);
-    system("free -h");
+    sys_return = system("free -h");
+    if (sys_return) {
+      printf("free");
+    }
     printf("clean cache ok!\n");
   }
   void Sleep20s() {

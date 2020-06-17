@@ -35,6 +35,8 @@ struct ReadOptions;
 
 extern bool ShouldReportDetailedTime(Env* env, Statistics* stats);
 
+extern std::atomic<uint64_t> block_reads;
+
 // the length of the magic number in bytes.
 const int kMagicNumberLengthByte = 8;
 

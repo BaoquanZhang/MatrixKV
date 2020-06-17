@@ -428,6 +428,7 @@ class DB {
   // use "snapshot" after this call.
   virtual void ReleaseSnapshot(const Snapshot* snapshot) = 0;
 
+
 #ifndef ROCKSDB_LITE
   // Contains all valid property arguments for GetProperty().
   //

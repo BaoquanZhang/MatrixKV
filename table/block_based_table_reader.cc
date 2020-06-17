@@ -58,6 +58,8 @@ extern const std::string kHashIndexPrefixesBlock;
 extern const std::string kHashIndexPrefixesMetadataBlock;
 using std::unique_ptr;
 
+std::atomic<uint64_t> block_reads{0};
+
 typedef BlockBasedTable::IndexReader IndexReader;
 
 BlockBasedTable::~BlockBasedTable() {
@@ -87,6 +89,7 @@ Status ReadBlockFromFile(
                              maybe_compressed, compression_dict, cache_options,
                              memory_allocator);
   Status s = block_fetcher.ReadBlockContents();
+  block_reads++;
   if (s.ok()) {
     result->reset(new Block(std::move(contents), global_seqno,
                             read_amp_bytes_per_bit, ioptions.statistics));

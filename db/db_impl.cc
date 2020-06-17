@@ -2055,18 +2055,23 @@ bool DBImpl::GetProperty(ColumnFamilyHandle* column_family,
     bool ret_value =
         GetIntPropertyInternal(cfd, *property_info, false, &int_value);
     if (ret_value) {
-      *value = ToString(int_value);
+      *value = ToString(int_value) +
+               "block_reads: " + std::to_string(block_reads) + "\n";
     }
     return ret_value;
   } else if (property_info->handle_string) {
     InstrumentedMutexLock l(&mutex_);
-    return cfd->internal_stats()->GetStringProperty(*property_info, property,
-                                                    value);
+    bool ret_value =
+        cfd->internal_stats()->GetStringProperty(
+            *property_info, property, value);
+    *value += "block_reads: " + std::to_string(block_reads) + "\n";
+    return ret_value;
   } else if (property_info->handle_string_dbimpl) {
     std::string tmp_value;
     bool ret_value = (this->*(property_info->handle_string_dbimpl))(&tmp_value);
     if (ret_value) {
-      *value = tmp_value;
+      *value = tmp_value +
+          "block_reads: " + std::to_string(block_reads) + "\n";;
     }
     return ret_value;
   }
@@ -2148,6 +2153,7 @@ bool DBImpl::GetPropertyHandleOptionsStatistics(std::string* value) {
 #ifndef ROCKSDB_LITE
 Status DBImpl::ResetStats() {
   InstrumentedMutexLock l(&mutex_);
+  block_reads = 0;
   for (auto* cfd : *versions_->GetColumnFamilySet()) {
     if (cfd->initialized()) {
       cfd->internal_stats()->Clear();

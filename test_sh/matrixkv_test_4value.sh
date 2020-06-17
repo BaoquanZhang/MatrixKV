@@ -1,13 +1,13 @@
 #! /bin/sh
 
-value_array=(1024 4096 16384 65536)
+value_array=(512 1024 4096)
 #value_array=(256)
-test_all_size=81920000000   #8G
+test_all_size=52428800   #50G
 
 
-bench_db_path="/mnt/ssd/test"
-wal_dir="/mnt/ssd/test"
-bench_value="4096"
+bench_db_path="/tmp/leveldb"
+wal_dir="/tmp/leveldb"
+bench_value="512"
 bench_compression="none" #"snappy,none"
 
 #bench_benchmarks="fillseq,stats,readseq,readrandom,stats" #"fillrandom,fillseq,readseq,readrandom,stats"
@@ -21,16 +21,16 @@ bench_benchmarks="fillrandom,stats,wait,clean_cache,stats,readseq,clean_cache,st
 bench_num="20000000"
 bench_readnum="1000000"
 #bench_max_open_files="1000"
-max_background_jobs="3"
-max_bytes_for_level_base="`expr 8 \* 1024 \* 1024 \* 1024`" 
+max_background_jobs="1"
+max_bytes_for_level_base="`expr 2 \* 1024 \* 1024 \* 1024`"
 #max_bytes_for_level_base="`expr 256 \* 1024 \* 1024`" 
 
 threads="1"
 
-pmem_path="/mnt/pmem0/nvm"
+pmem_path="/mnt/ramdisk"
 use_nvm="true"
 
-report_write_latency="false"
+report_write_latency="true"
 
 bench_file_path="$(dirname $PWD )/db_bench"
 
